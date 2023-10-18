@@ -27,6 +27,26 @@ function sumGroups(arr) {
   return result;
 }
 
+function score(arr) {
+  const sum = arr.reduce((acc, obj) => {
+    if (obj.opponent === "A") {
+      if (obj.me === "X") acc = acc + 1 + 3;
+      if (obj.me === "Y") acc = acc + 2 + 6;
+      if (obj.me === "Z") acc = acc + 3 + 0;
+    } else if (obj.opponent === "B") {
+      if (obj.me === "X") acc = acc + 1 + 0;
+      if (obj.me === "Y") acc = acc + 2 + 3;
+      if (obj.me === "Z") acc = acc + 3 + 6;
+    } else if (obj.opponent === "C") {
+      if (obj.me === "X") acc = acc + 1 + 6;
+      if (obj.me === "Y") acc = acc + 2 + 0;
+      if (obj.me === "Z") acc = acc + 3 + 3;
+    }
+    return acc;
+  }, 0);
+  return sum;
+}
+
 async function readFileAndReturnContent(filePath) {
   return fs.readFile(filePath, "utf8");
 }
@@ -49,14 +69,18 @@ let data;
   try {
     data = await readFileAndReturnContent(filePath);
 
-    const numbers = data.split("\n").map(Number);
+    const dataLines = data.split("\n");
 
-    elves = sumGroups(numbers);
+    const result = dataLines.reduce((acc, line) => {
+      const [opponent, me] = line.split(" ");
+      acc.push({ opponent, me });
+      return acc;
+    }, []);
 
-    console.log("There is an elve with:", maxCalories(elves), "calories");
+    const scr = score(result)
 
-    // console.log('File contents:');
-    // console.log(data);
+    // console.log("File contents:");
+    console.log(scr);
   } catch (err) {
     console.error(`Error reading the file: ${err}`);
   }
