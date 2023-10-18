@@ -1,32 +1,5 @@
 const fs = require("fs").promises;
 
-function sumGroups(arr) {
-  const result = [];
-  let currentGroup = [];
-  let groupNumber = 1;
-
-  for (const num of arr) {
-    if (num === 0) {
-      if (currentGroup.length > 0) {
-        const sum = currentGroup.reduce((acc, n) => acc + n, 0);
-        result.push({ groupNumber, sum });
-        groupNumber++;
-        currentGroup = [];
-      }
-    } else {
-      currentGroup.push(num);
-    }
-  }
-
-  // Calculate and store the last group (if not ending with 0)
-  if (currentGroup.length > 0) {
-    const sum = currentGroup.reduce((acc, n) => acc + n, 0);
-    result.push({ groupNumber, sum });
-  }
-
-  return result;
-}
-
 function score(arr) {
   const sum = arr.reduce((acc, obj) => {
     if (obj.opponent === "A") {
